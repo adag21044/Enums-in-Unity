@@ -5,6 +5,8 @@ public class CharacterStateMachine : MonoBehaviour
     [SerializeField] private Sprite[] sprites;
     private SpriteRenderer spriteRenderer;
     private ChacterStates currentState;
+    private float idleTimer = 0f;
+    private float idleTimeThreshold = 1f; // 1 saniye
 
     void Start()
     {
@@ -56,12 +58,18 @@ public class CharacterStateMachine : MonoBehaviour
 
     void Idle()
     {
-        
-        for (int i = 0; i < 8; i++)
+        idleTimer += Time.deltaTime;
+
+        // Her 1 saniyede bir sprite değiştir
+        if (idleTimer >= idleTimeThreshold)
         {
-            spriteRenderer.sprite = sprites[i];
-        }    
-       
+            for (int i = 0; i < 8; i++)
+            {
+                spriteRenderer.sprite = sprites[i];
+            }
+
+            idleTimer = 0f; // Sayaçı sıfırla
+        }
     }
 
     void Attack()
